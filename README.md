@@ -1,15 +1,14 @@
 # bin_stuff
 command-line programs for performing mathematical operations on flat binary data files
-<html>
 
 <title>X-ray data manipulation utilities</title>
 
 <h1>X-ray data manipulation utilities</h1>
 
 
-<img src="noisifyme_tmb.gif">
-<img src="arrow.jpg">
-<img src="noisified_tmb.gif">
+<img src="docs/noisifyme_tmb.gif">
+<img src="docs/arrow.jpg">
+<img src="docs/noisified_tmb.gif">
 
 <p>
 <h2>convert, add, subtract, multiply or whatever</h2>
@@ -20,60 +19,37 @@ I wrote them to &quot;hack&quot; X-ray images and electron density map files, bu
  more tricks for them to perform.  Documentation is divided by program, with cross-referencing between them:
 <dl>
 <dt>
-<h3><a href=xray_formats.html>description of X-ray file formats</a></h3>
+<h3><a href=docs/xray_formats.html>description of X-ray file formats</a></h3>
 </dt>
 <dd>
 Brief description of how SMV, CBF and CCP4 map files work, and how you can manipulate them.
 </dd>
 <dt>
-<h3><a href=int2float.html>int2float</a></h3>
+<h3><a href=docs/int2float.html>int2float</a></h3>
 </dt>
 <dd>
 Convert 16-bit integers, such as SMV-formatted images into floating-point for overlay of or combination with X-ray data.
 </dd>
 <dt>
-<h3><a href=floatgen.html>floatgen</a></h3>
+<h3><a href=docs/floatgen.html>floatgen</a></h3>
 </dt>
 <dd>
 Convert text data into floating-point for overlay of or combination with X-ray data.
 </dd>
 <dt>
-<h3><a href=float_add.html>float_add</a></h3>
+<h3><a href=docs/float_add.html>float_add</a></h3>
 </dt>
 <dd>
 Add, subtract, scale and offset raw floating-point flat files with arbitrary headers.
 </dd>
 <dt>
-<h3><a href=float_func.html>float_func</a></h3>
+<h3><a href=docs/float_func.html>float_func</a></h3>
 </dt>
 <dd>
 Perform any C function on one or two raw floating-point flat files with arbitrary headers.
 </dd>
 <dt>
-<h3><a href=../nearBragg/>nearBragg</a></h3>
-</dt>
-<dd>
-First-principles simulation of total scattering, outputs floating-point flat files and SMV format images.
-<dd>
-</dd>
-<dt>
-<h3><a href=../nanoBragg/>nanoBragg</a></h3>
-</dt>
-<dd>
-Takes more shortcuts than nearBragg to simulate scattering from nanocrystals.  Can also be used
-to generate single-particle diffraction patterns and SAXS.
-<dd>
-</dd>
-<dt>
-<h3><a href=../nonBragg/>nonBragg</a></h3>
-</dt>
-<dd>
-Simulate centrosymmetric scattering (before polarization) from amorphous substances such as water
-or air, as well as SAXS from proteins.
-<dd>
-</dd>
-<dt>
-<h3><a href=noisify.html>noisify</a></h3>
+<h3><a href=docs/noisify.html>noisify</a></h3>
 </dt>
 <dd>
 Add any kind of noise to floating-point flat files and output SMV-formatted X-ray data.
