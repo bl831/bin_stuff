@@ -1,0 +1,184 @@
+<html>
+
+<title>int2float: convert 16-bit integers into single-precision float</title>
+
+<h1>int2float: convert X-ray images into floating point</h1>
+
+This short program converts an "SMV" format X-ray image or other field of 16-bit
+"unsigned short int" type data into a flat file of 4-byte "float" 
+single-precision floating
+point numbers.  This format is identical to the "floatimage.bin" files
+output by my
+<a href=http://bl831.als.lbl.gov/~jamesh/nearBragg/>nearBragg</a>,
+<a href=http://bl831.als.lbl.gov/~jamesh/nanoBragg/>nanoBragg</a>, and
+<a href=http://bl831.als.lbl.gov/~jamesh/nonBragg/>nonBragg</a>
+simulators, making the output of int2float
+ suitable for direct side-by-side comparison of 
+simulated data to real data using
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/float_add.html>float_add</a>.
+
+The floating-point output of int2float may also be manipulated in other
+innovative ways, such as subtracting idealized background extracted
+from the image using
+<a href=http://bl831.als.lbl.gov/~jamesh/nonBragg/>nonBragg</a>.
+Or, arbitrary scaling, subtracting or mixing and matching using the core
+floating-point flat-file manipulation programs
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/float_add.html>float_add</a>,
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/float_mult.html>float_mult</a>
+or
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/float_func.html>float_func</a>.
+<p>
+Once the transformations are complete, the 4-byte float file can be converted
+back into an "SMV" format image using 
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/noisify.html>noisify</a>.
+
+
+<h2>source code and binaries</h2>
+source: <a href=int2float.c>int2float.c</a> <p>
+pre-compiled binaries: 
+ <a href=int2float.Linux>linux</a>,
+ <a href=int2float.Darwin>OSX</a>,
+ <a href=int2float.Cygwin>Windows</a>
+<p>
+there are no dependencies beyond the standard C 
+math libraries shipped with essentailly
+all modern C compilers.
+
+<h2>example usage:</h2>
+
+get program:
+<pre>wget <a href=int2float.c>http://bl831.als.lbl.gov/~jamesh/bin_stuff/int2float.c</a></pre>
+compile it
+<pre>gcc -O -O -o <a href=int2float>int2float</a> <a href=int2float.c>int2float.c</a> -lm</pre>
+
+Get an SMV x-ray image here:
+<pre>wget <a href=http://bl831.als.lbl.gov/example_data_sets/ALS/831/Gd_lyso1/ALS831_lyso_Gd_001.img>http://bl831.als.lbl.gov/example_data_sets/ALS/831/Gd_lyso1/ALS831_lyso_Gd_001.img</a>
+<img src=ALS831_lyso_Gd_001_tmb.jpg> <img src=ALS831_lyso_Gd_001_zoom_tmb.jpg>
+</pre>
+
+convert the SMV image to floats
+<pre>
+./<a href=int2float>int2float</a> -header 512 <a href=http://bl831.als.lbl.gov/example_data_sets/ALS/831/Gd_lyso1/ALS831_lyso_Gd_001.img>ALS831_lyso_Gd_001.img</a> smv.bin
+</pre>
+
+use the unix &quot;<a href=http://man7.org/linux/man-pages/man1/od.1.html>od</a>&quot; utility to view the result:
+<pre><a href=http://man7.org/linux/man-pages/man1/od.1.html>od</a> -f <a href=smv.bin>smv.bin</a> | head
+0000000   8.224000e+03   8.224000e+03   8.224000e+03   8.224000e+03
+*
+0000140   1.000000e+01   0.000000e+00   0.000000e+00   0.000000e+00
+0000160   0.000000e+00   0.000000e+00   0.000000e+00   0.000000e+00
+*
+0060000   0.000000e+00   0.000000e+00   4.000000e+01   4.000000e+01
+0060020   4.000000e+01   1.600000e+01   2.400000e+01   3.800000e+01
+0060040   4.700000e+01   4.200000e+01   3.200000e+01   2.700000e+01
+0060060   4.000000e+01   4.300000e+01   3.600000e+01   3.300000e+01
+0060100   4.000000e+01   4.200000e+01   3.800000e+01   3.400000e+01
+</pre>
+compare this with the pixel values you get from the original file:
+<pre><a href=http://man7.org/linux/man-pages/man1/od.1.html>od</a> -t u2 --skip=512 <a href=http://bl831.als.lbl.gov/example_data_sets/ALS/831/Gd_lyso1/ALS831_lyso_Gd_001.img>ALS831_lyso_Gd_001.img</a> | head
+0001000  8224  8224  8224  8224  8224  8224  8224  8224
+*
+0001060    10     0     0     0     0     0     0     0
+0001100     0     0     0     0     0     0     0     0
+*
+0031000     0     0    40    40    40    16    24    38
+0031020    47    42    32    27    40    43    36    33
+0031040    40    42    38    34    48    43    50    37
+0031060    27    43    39    43    43    35    35    38
+0031100    46    40    31    37    36    29    26    52
+</pre>
+
+Now you can do any number of things to the floating-point values using the 
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/float_add.html>float_add</a>,
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/float_mult.html>float_mult</a>, or
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/float_func.html>float_func</a> utilities. For example, you can convert
+the pixel values into photon counts. like this:
+<pre>
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/float_add.html>float_add</a> smv.bin smv.bin -scale1 0.625 -scale2 0 -offset 40 -outoffset 0 photons.bin
+<a href=http://man7.org/linux/man-pages/man1/od.1.html>od</a> -f photons.bin | head
+0000000        4546.212        4546.212        4546.212        4546.212
+*
+0000140      -16.664999          -22.22          -22.22          -22.22
+0000160          -22.22          -22.22          -22.22          -22.22
+*
+0060000          -22.22          -22.22               0               0
+0060020               0      -13.331999          -8.888          -1.111
+0060040       3.8884997           1.111          -4.444      -7.2214994
+0060060               0       1.6664999          -2.222      -3.8884997
+0060100               0           1.111          -1.111      -3.3329997
+</pre>
+
+Notice that the photon "counts" are not integers.  This is normal.
+We are correcting for a "detector gain" of 1.6 by multiplying the pixel values 
+by 0.625, after subtracting the "ADC offset" of 40.
+<p>
+Depending on wavelength, angle, and other factors the signal recorded by
+the detector from a single photon hit can vary, and in general the value
+recorded in the image file is related to the photon count by a scale factor
+called the "gain" and an offset called the "adc offset".  These
+are the same gain and adc offset you need to provide to data processing 
+programs if they are not set correctly by default.
+<p>
+In this case, we are using a gain of 1.6 ADU/photon and an offset of 40 ADU.
+Where "ADU" is an "Area Detector Unit", or the signal required to increment
+the integer value stored in the image file by one tick.
+<p>
+Although often incorrectly referred to as "counts" one ADU does not 
+necessarily mean one X-ray photon. The "gain" in ADU/photon depends not only
+ on the sensitivity of the detector (which
+varies with wavelength, incidence angle, and other factors), but also
+on the choice of binning mode, and the setting of the amplifier before the 
+analog-to-digital converter (ADC).
+Because of this, the gain has little to do with the "quality" of the detector,
+but it is still important to give the right value to your data processing
+package. 
+<p>
+The pixel values also contain an offset: 40 ADU in this case.  This is because
+the CCD read-out circuit always introduces a certain amount of noise and this
+noise is equally likely to be positive or negative, but the "unsigned integer"
+data type used in the image file cannot represent a negative value, it would
+"wrap around" and become an overload!  To keep this from happening, a small
+constant value is added to ever pixel: the ADC offset.  It is large enough
+to garantee the value cannot go negative, but small enough not to use up 
+too much of the 16 bit dynamic range.  The 
+CCD read-out noise level here is about rms 3 pixel levels (aka ADU), so an 
+offset of 40 is safe. 
+<p>
+So, when you see a value of 40 "counts" in an ADSC image, it is really
+representing zero photons.
+<p>
+So, we could round off the photons to integers, but that would introduce
+roundoff error, adding noise to the data.  Yes, the original digitization
+of the signal from the CCD also introduced roundoff error, but there is 
+nothing we can do about that now. Fortunately, by selecting a "gain" greater
+than one the roundoff error is kept much smaller than the photon-counting error.
+<p>
+
+
+ Now let's convert the
+photon counts back into an SMV file using
+<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/noisify.html>noisify</a>:
+
+<pre>wget <a href=noisify.c>http://bl831.als.lbl.gov/~jamesh/bin_stuff/noisify.c</a>
+gcc -o noisify <a href=noisify.c>noisify.c</a> -lm
+./noisify -floatfile photons.bin -nonoise -gain 1.6 -adc 40.5 -header ALS831_lyso_Gd_001.img -intfile intimage.img
+adxv intimage.img
+<img src=ALS831_lyso_Gd_001_tmb.jpg> <img src=ALS831_lyso_Gd_001_zoom_tmb.jpg>
+</pre>
+
+The SMV-format image output in this way should be byte-for-byte identical to 
+the original SMV-format image input into int2float.  The reason for using an
+ADC offset of 40.5 instead of 40 is because noisify internally rounds all 
+photon counts into integers.
+
+<hr>
+Command-line options:<br>
+<dl>
+<dt> -header 512 <dt>
+<dd> the number of bytes to skip as a header, default: 512. <dd>
+</dl>
+<hr>
+Author:
+<ADDRESS><A HREF="mailto:JMHolton@lbl.gov">James Holton &lt;JMHolton@lbl.gov&gt;</A></ADDRESS>
+<br>
+</html>
