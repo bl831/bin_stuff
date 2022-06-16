@@ -6,9 +6,7 @@ command-line programs for performing mathematical operations on flat binary data
 <h1>X-ray data manipulation utilities</h1>
 
 
-<img src="docs/noisifyme_tmb.gif">
-<img src="docs/arrow.jpg">
-<img src="docs/noisified_tmb.gif">
+<img src="docs/noisifyme_tmb.gif"> <img src="docs/arrow.jpg"> <img src="docs/noisified_tmb.gif">
 
 <p>
 <h2>convert, add, subtract, multiply or whatever</h2>
