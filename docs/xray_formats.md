@@ -11,7 +11,7 @@ You can get an SMV x-ray image here:
 wget http://bl831.als.lbl.gov/example_data_sets/ALS/831/Gd_lyso1/ALS831_lyso_Gd_001.img
 ```
 
-<img src=ALS831_lyso_Gd_001_tmb.jpg> <img src=ALS831_lyso_Gd_001_zoom_tmb.jpg></pre>
+![](ALS831_lyso_Gd_001_tmb.jpg) ![](ALS831_lyso_Gd_001_zoom_tmb.jpg)
 
 The SMV format always has a text header, and it is almost always 512 bytes.
 The top of the header will tell you how many bytes, so you can check with the
@@ -95,7 +95,7 @@ and see that the first few pixels in the upper left corner really do have value
 8224 (which is not typical, but convenient here), followed by a few rows of zeroes, and 
 then followed by the actual active detector pixel values.
 
-<img src=adxv_mag1.jpg>
+![](adxv_mag1.jpg)
 
 For ADSC detector images an offset value of "40" is used to denote zero photons.
 This is because the signal is stored as unsigned integers, and negative values 
@@ -146,7 +146,7 @@ convert smaller.jpg -negate -resize 3072x3072 -depth 16 -colorspace GRAY -endian
 adxv jpeged.img
 ```
 
-<img src=jpeged_tmb.jpg> <img src=jpeged_zoom_tmb.jpg>
+![](jpeged_tmb.jpg) ![](jpeged_zoom_tmb.jpg)
 
 If these unix commands don't work, then you are probably using bash.
 You will find a file named "!" in this case. Type the
@@ -156,7 +156,7 @@ command "tcsh" to switch to a shell that supports this example formatting.
 Once you are using tcsh and examining jpeged.img in adxv
 you will notice the X-ray data in the image didn't really survive:
 
-<img src=jpeged_mag.jpg><br>
+![](jpeged_mag.jpg)
 
 The pixel values are all huge, the spots are overloaded, and the image is blury.
 This is becuase we converted it to jpeg, which looses information, and we also normalized it.
@@ -169,7 +169,7 @@ convert adsc.tif -depth 16 -colorspace GRAY -endian LSB GRAY:- >> tiffed.img
 adxv tiffed.img
 ```
 
-<img src=tiffed_tmb.jpg> <img src=tiffed_zoom_tmb.jpg>
+![](tiffed_tmb.jpg) ![](tiffed_zoom_tmb.jpg)
 
 If everything worked, then the file `tiffed.img` should be precisely identical to the original file
 `ALS831_lyso_Gd_001.img`. You can confirm this with the unix program `cmp`:
@@ -189,7 +189,7 @@ convert adsc.tif -depth 16 -colorspace GRAY -endian LSB -draw "circle 1513,1554 
 adxv noBS.img
 ```
 
-<img src=noBS_tmb.jpg> <img src=noBS_zoom_tmb.jpg>
+![](noBS_tmb.jpg) ![](noBS_zoom_tmb.jpg)
 
 note that [ADXV][adxv] and [ImageMagick][imagemagick] use the same x-y coordinate conventions.
 
@@ -203,7 +203,7 @@ convert diff.tif -depth 16 -colorspace GRAY -endian LSB GRAY:- >> spots.img
 adxv spots.img
 ```
 
-<img src=spots_tmb.jpg> <img src=spots_zoom_tmb.jpg>
+![](spots_tmb.jpg) ![](spots_zoom_tmb.jpg)
 
 Which could be useful for autoindexing or raster-based location of crystals.
 
@@ -219,7 +219,7 @@ adxv -sa lysozym-1_1_00001.cbf pilatus.img
 adxv pilatus.img &
 ```
 
-<img src=pilatus_tmb.jpg> <img src=pilatus_zoom_tmb.jpg>
+![](pilatus_tmb.jpg) ![](pilatus_zoom_tmb.jpg)
 
 ```bash
 convert -depth 16 -colorspace GRAY -endian LSB -size 2463x2527+512 GRAY:pilatus.img pilatus.tif
@@ -228,7 +228,7 @@ convert pilatus.tif -depth 16 -colorspace GRAY -endian LSB -draw "rectangle 0,12
 adxv pilatus_noBS.img
 ```
 
-<img src=pilatus_noBS_tmb.jpg> <img src=pilatus_noBS_zoom_tmb.jpg><br>
+![](pilatus_noBS_tmb.jpg) ![](pilatus_noBS_zoom_tmb.jpg)
 
 Notice that the last command blacked-out the beamstop shadow. Yes, you can process SMV images from
 a Pilatus and it will not hurt your data. You just need to make sure the processing program has the
@@ -278,7 +278,7 @@ convert pilatus32.tif -depth 32 -colorspace GRAY -endian LSB -draw "rectangle 0,
 adxv pilatus32_noBS.img &
 ```
 
-<img src=pilatus32_noBS_tmb.jpg><br>
+![](pilatus32_noBS_tmb.jpg)
 
 You will see that the beamstop is zeroed out, but all the data has been changed to zero as well.
 Different versions of ImageMagick will do different things here.
