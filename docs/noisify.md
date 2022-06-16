@@ -4,66 +4,65 @@ Utility to convert photons/pixel into X-ray image formats
 
 ![](noisifyme_tmb.gif) ![](arrow.jpg) ![](noisified_tmb.gif)
 
-
 This simple program converts a raw, flat file of 4-byte single-precision 
 floating point numbers representing "phtons/pixel", such as the "floatimage.bin" files
-output by my
-[nearBragg](https://github.com/bl831/nearBragg),
-[nanoBragg](https://github.com/bl831/nanoBragg), and
-[nonBragg](https://github.com/bl831/nonBragg)
-simulators, into an "SMV" format X-ray image.  The "Super Marty View" or SMV format is one of the
+output by my [nearBragg][neabragg], [nanoBragg][nanobragg], and [nonBragg][nonbragg]
+simulators, into an "SMV" format X-ray image. The "Super Marty View" or SMV format is one of the
 most widespread and long-lived format for X-ray images. It was used by Area Detector Systems
-Corporation (ADSC) and more recently by [Rigaku][rigaku].
-  It is programmatically
-convenient because it is a "flat" file format, with the bytes stored 
-uncompressed.  It can be converted to other formats such as CBF by using
-<a href=http://www.bernstein-plus-sons.com/software/CBF/>CBFlib</a>.
-<p>
-The noise model used by noisify is relatively simplistic, but still comprehensive.
+Corporation (ADSC) and more recently by [Rigaku][rigaku]. It is programmatically convenient because
+it is a "flat" file format, with the bytes stored uncompressed. It can be converted to other
+formats such as CBF by using [CBFlib][cbflib].
+
+The noise model used by `noisify` is relatively simplistic, but still comprehensive.
 In general, noise is either proprotional to the signal, such as flicker
 noise, shutter jitter, or calibration errors, independent of the signal, such
 as read-out noise, or proportinal to the square root of the signal, which
 is photon-counting noise.  This program implements all three, with inputs
 in real-world units.  See the command-line options below.
-<p>
-Noisify will also implement a fiber-coupled-CCD-like point spread function
-using the formula derived by
-(<a href=http://dx.doi.org/10.1107%2FS0909049512035571>Holton et al. 2010</a>).
 
-<h2>source code and binaries</h2>
-source: <a href=noisify.c>noisify.c</a> <p>
-pre-compiled binaries: 
- <a href=noisify.Linux>linux</a>,
- <a href=noisify.Darwin>OSX</a>,
- <a href=noisify.Cygwin>Windows</a>
-<p>
-there are no dependencies beyond the standard C 
-math libraries shipped with essentailly
+`noisify` will also implement a fiber-coupled-CCD-like point spread function using the formula
+derived by [Holton et al. 2010](http://dx.doi.org/10.1107%2FS0909049512035571).
+
+## source code
+
+source: [noisify.c](../noisify.c)
+
+## compile
+
+there are no dependencies beyond the standard C math libraries shipped with essentailly
 all modern C compilers.
 
-<h2>example usage:</h2>
+```
+gcc -O -O -o noisify noisify.c -lm
+```
 
-Get the program:
-<pre>
-wget <a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/noisify.c>http://bl831.als.lbl.gov/~jamesh/bin_stuff/noisify.c</a></pre>
-compile it
-<pre>
-gcc -O -O -o noisify <a href=noisify.c>noisify.c</a> -lm
-</pre>
+## example usage
 
-Now we need some floating-point values.  Might as well use
-<a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/floatgen.html>floatgen</a>
-to make a ramp:
-<pre>
-wget <a href=http://bl831.als.lbl.gov/~jamesh/bin_stuff/floatgen.c>http://bl831.als.lbl.gov/~jamesh/bin_stuff/floatgen.c</a>
-gcc -o floatgen <a href=floatgen.c>floatgen.c</a> -lm
+Now we need some floating-point values.  Might as well use [floatgen](floatgen.md) to make a ramp:
+
+Compile `floatgen`
+
+```
+gcc -o floatgen floatgen.c -lm
+```
+
+Create ramp:
+
+```
 seq 0 65535 | ./floatgen >! ramp.bin
-</pre>
-Now we run these pixel values through noisify.  It will use some sensible defaults for detector geometry
+```
+
+Now we run these pixel values through `noisify`. It will use some sensible defaults for detector geometry
 to put into the header (it does not affect the results), and guess at the x-y size of the detector:
-<pre>
+
+```
 ./noisify -floatfile ramp.bin
-<font color=#009900>noisify - add noise to pixels - James Holton 10-4-15
+```
+
+output:
+
+```bash
+noisify - add noise to pixels - James Holton 10-4-15
 WARNING: guessing xy pixel dimensions.
 importing 65536 pixel intensites: ramp.bin
   distance=0.1 detsize=0.0256x0.0256  pixel=0.0001 meters (256x256 pixels)
@@ -81,16 +80,22 @@ maximum value in input file: 65535 ( 65535 on photon scale)
 writing intimage.img as 65536 2-byte integers
 writing image.pgm as 1-byte integers
 2147701149 photons on noise image (786 overloads)
-writing noiseimage.img as 2-byte integers</font>
+writing noiseimage.img as 2-byte integers
+```
+
+Visualize:
+
+```bash
 mv noiseimage.img ramp.img
 adxv ramp.img
-<img src=ramp_tmb.jpg>
-</pre>
-You can see that although the "true" pixel values are ramping up linearly in the
-input file "ramp.bin", the "x" direction is moving
-fastest and the "y" direction is slower.  There is also "fuzziness" to the image because noisify added
-Poissonian photon-counting noise.
-<p>
+```
+
+![](ramp_tmb.jpg)
+
+You can see that although the "true" pixel values are ramping up linearly in the input file
+"ramp.bin", the "x" direction is moving fastest and the "y" direction is slower. There is also
+"fuzziness" to the image because `noisify` added Poissonian photon-counting noise.
+
 To see what diffraction data look like, download and compile nanoBragg:
 <pre>
 wget <a href=http://bl831.als.lbl.gov/~jamesh/nanoBragg/nanoBragg.c>http://bl831.als.lbl.gov/~jamesh/nanoBragg/nanoBragg.c</a>
@@ -194,4 +199,8 @@ Author:
 <ADDRESS><A HREF="mailto:JMHolton@lbl.gov">James Holton &lt;JMHolton@lbl.gov&gt;</A></ADDRESS>
 <br>
 
+[nearbragg]: https://github.com/bl831/nearBragg
+[nanobragg]: https://github.com/bl831/nanoBragg
+[nonbragg]: https://github.com/bl831/nonBragg
 [rigaku]: https://www.rigaku.com
+[cbflib]: http://www.bernstein-plus-sons.com/software/CBF
