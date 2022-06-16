@@ -243,6 +243,8 @@ adxv -smv32bits -sa lysozym-1_1_00001.cbf pilatus32.img
 adxv pilatus32.img &
 ```
 
+![](pilatus32_tmb.jpg)
+
 How can you tell if an SMV file is 16 or 32 bits?  Look at the header.
 It is text, and not hard to understand:
 
