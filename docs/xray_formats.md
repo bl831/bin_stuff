@@ -319,7 +319,7 @@ A nice jiffy program for applying various mathematical functions to maps is here
 <br>
 
 
-[adxv]: http://www.scripps.edu/~arvai/adxv.html
+[adxv]: https://www.scripps.edu/tainer/arvai/adxv.html
 [rigaku]: https://www.rigaku.com
 [mosflm]: http://www.mrc-lmb.cam.ac.uk/harry/mosflm/
 [hkl]: http://www.hkl-xray.com

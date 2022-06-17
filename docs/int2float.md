@@ -165,7 +165,7 @@ photon counts into integers.
 <ADDRESS><A HREF="mailto:JMHolton@lbl.gov">James Holton &lt;JMHolton@lbl.gov&gt;</A></ADDRESS>
 
 
-[adxv]: http://www.scripps.edu/~arvai/adxv.html
+[adxv]: https://www.scripps.edu/tainer/arvai/adxv.html
 [rigaku]: https://www.rigaku.com
 [mosflm]: http://www.mrc-lmb.cam.ac.uk/harry/mosflm/
 [hkl]: http://www.hkl-xray.com
