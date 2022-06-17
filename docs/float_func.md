@@ -65,7 +65,7 @@ ls -l 3Dball.map
 and 132176 - 131072 = 1104.
 
 A handy wrapper around `float_func` that will do this map header sizing for you is 
-[map_func.com](../map_func.com)
+[map_func.com](map_func.com)
 But, now that we know the header size, we can use `float_func` directly to make
 three sets of Gaussian random-numbers for each voxel in the map:
 
@@ -103,7 +103,7 @@ coot -p 3Dball.pdb --map grand1.map --map grand2.map --map grand3.map
 Now, it should be noted that the noise in these maps was added with each voxel varying completely
 independently of the others.  This is seldom the case in reality, as the map grid is usually
 selected to at least critically sample the electron density function.  To make our noise more
-"realistic" we want to apply a resolution cutoff.  We can do this by running the map through
+"realistic" we want to apply a resolution cutoff. We can do this by running the map through
 the [CCP4][ccp4] programs [SFALL][sfall] and [FFT][fft]. Like so:
 
 ```bash
@@ -257,7 +257,7 @@ from 0.8. This is the nature of error estimates when you have a small number of 
 Nevertheless, although the "noise map" is itself noisy, the "true" noise is remarkably flat.
 It just doesn't look flat when viewed as electron density. IMHO a better way to display noise
 is to animate a series of maps in [Coot][coot] as the first few graphics do here.  You can use this handy script 
-kindly provided by Paul Emsley [coot_map_boiling.scm](../coot_map_boiling.scm).
+kindly provided by Paul Emsley [coot_map_boiling.scm](coot_map_boiling.scm).
 
 However, if you want to do some statistics what you really want is a "signal-to-noise" map 
 using this error estimate, or perhaps an error estimate "blurred" a bit to make neighboring
@@ -336,7 +336,7 @@ coot -p 3Dball.pdb --map erf.map
 
 Where the grey ball is the "right answer" we used to create the fake data in the first palce. 
 You can see that this is on the hairy edge of "something is there". The contour level here is 99%.
-That is, set the "absolute" contour level to 0.99 in Coot.  This shows you map voxels that are above
+That is, set the "absolute" contour level to 0.99 in `Coot`. This shows you map voxels that are above
 the 99% confidence threshold, assuming all the voxels are independent.
 
 Ostensibly, this "probability map" could be smoothed, converted into electrons and added back as a partial 
@@ -571,7 +571,7 @@ explicity indicate output file (default: third filename)
 ## Author
 <ADDRESS><A HREF="mailto:JMHolton@lbl.gov">James Holton &lt;JMHolton@lbl.gov&gt;</A></ADDRESS>
 
-[adxv]: http://www.scripps.edu/~arvai/adxv.html
+[adxv]: https://www.scripps.edu/tainer/arvai/adxv.html
 [rigaku]: https://www.rigaku.com
 [mosflm]: http://www.mrc-lmb.cam.ac.uk/harry/mosflm/
 [hkl]: http://www.hkl-xray.com
