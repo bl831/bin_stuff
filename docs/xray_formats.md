@@ -314,7 +314,7 @@ floating-point values on the same grid as a given map and then cut-and-paste the
 generated map in front of the data and voila!, you can look at your 3D data in [Coot][coot].
 
 A nice jiffy program for applying various mathematical functions to maps is here:
-[map_func.com](map_func.com)
+[map_func.com](../map_func.com)
 
 ## Author:
 <ADDRESS><A HREF="mailto:JMHolton@lbl.gov">James Holton &lt;JMHolton@lbl.gov&gt;</A></ADDRESS>
