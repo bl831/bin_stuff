@@ -154,7 +154,7 @@ writing output.bin as a 0-byte header with 9437184 4-byte floats
 
 Also, the valid pixels in this image have an offset of 40 pixel units, and one photon hit
 creates an average pixel increment of 1.6 levels (ADU).  See the description of the
-[xray formats](xray_format.md). So, if we want to convert the image into photons, we do this:
+[xray formats](xray_formats.md). So, if we want to convert the image into photons, we do this:
 
 ```bash
 ./float_add smv.bin smv.bin -scale1 0.625 -scale2 0 -ignore 0 -ignore 65535 -offset 40 -outoffset 0 -outfile photons.bin
