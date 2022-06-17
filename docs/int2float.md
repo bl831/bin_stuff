@@ -18,7 +18,7 @@ format image using [noisify][noisify].
 
 ## source code
 
-source: [int2float.c](int2float.c)
+source: [int2float.c](../int2float.c)
 
 There are no dependencies beyond the standard C math libraries shipped with essentailly
 all modern C compilers.
