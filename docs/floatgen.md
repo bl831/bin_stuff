@@ -12,7 +12,7 @@ It can also generate data to directly replace the voxel values in an electron de
 
 ## source code
 
-source: [floatgen.c](floatgen.c)
+source: [floatgen.c](../floatgen.c)
 
 There are no dependencies beyond the standard C math libraries shipped with essentailly
 all modern C compilers.
@@ -86,9 +86,8 @@ coot -p 3Dball.pdb --map 3Dball.map
 
 You can probably think of more interesting shapes to put into the map.
 
-## Author:
+## Author
 <ADDRESS><A HREF="mailto:JMHolton@lbl.gov">James Holton &lt;JMHolton@lbl.gov&gt;</A></ADDRESS>
-<br>
 
 
 [adxv]: http://www.scripps.edu/~arvai/adxv.html
