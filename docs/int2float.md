@@ -10,7 +10,7 @@ simulated data to real data using [float_add][float_add].
 The floating-point output of `int2float` may also be manipulated in other innovative ways, such as
 subtracting idealized background extracted from the image using [nonBragg][nonbragg].
 Or, arbitrary scaling, subtracting or mixing and matching using the core
-floating-point flat-file manipulation programs [float_add][float_add], [float_mult][../float_mult.c], or
+floating-point flat-file manipulation programs [float_add][float_add], [float_mult](../float_mult.c), or
 [float_func][float_func].
 
 Once the transformations are complete, the 4-byte float file can be converted back into an "SMV"
