@@ -65,7 +65,7 @@ ls -l 3Dball.map
 and 132176 - 131072 = 1104.
 
 A handy wrapper around `float_func` that will do this map header sizing for you is 
-[map_func.com](map_func.com)
+[map_func.com](../map_func.com)
 But, now that we know the header size, we can use `float_func` directly to make
 three sets of Gaussian random-numbers for each voxel in the map:
 
