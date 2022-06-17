@@ -326,7 +326,7 @@ A nice jiffy program for applying various mathematical functions to maps is here
 [mosflm]: http://www.mrc-lmb.cam.ac.uk/harry/mosflm/
 [hkl]: http://www.hkl-xray.com
 [xds]: http://xds.mpimf-heidelberg.mpg.de
-[fmodel]: http://www.phenix-online.org/documentation/fmodel.htm
+[fmodel]: https://phenix-online.org/documentation/reference/fmodel.html
 [refmac]: https://www2.mrc-lmb.cam.ac.uk/groups/murshudov/content/refmac/refmac.html
 [sfall]: https://www.ccp4.ac.uk/html/sfall.html
 [imagemagick]: http://www.imagemagick.org
