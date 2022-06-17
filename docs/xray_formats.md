@@ -2,8 +2,8 @@
 
 Possibly the most widespread and long-lived format for X-ray images is the 
 "Super Marty View" or SMV format used by Area Detector Systems Corporation (ADSC)
-and more recently by [Rigaku][rigaku]. It is programmatically convenient because it is a "flat"
-file format, with the bytes stored uncompressed.
+and more recently by [Rigaku][rigaku]. It is programmatically convenient
+because it is a "flat" file format, with the bytes stored uncompressed.
 
 You can get an SMV x-ray image here:
 
@@ -92,15 +92,15 @@ od -t u2 --skip=512 ALS831_lyso_Gd_001.img | head
 
 you can also inspect this image in [ADXV][adxv] or any other X-ray image viewer
 and see that the first few pixels in the upper left corner really do have value
-8224 (which is not typical, but convenient here), followed by a few rows of zeroes, and 
-then followed by the actual active detector pixel values.
+8224 (which is not typical, but convenient here), followed by a few rows of
+zeroes, and then followed by the actual active detector pixel values.
 
 ![](adxv_mag1.jpg)
 
 For ADSC detector images an offset value of "40" is used to denote zero photons.
 This is because the signal is stored as unsigned integers, and negative values 
-would wrap-around to an overload. The CCD read-out noise level here is about rms 3 pixel levels
-(aka ADU), so an offset of 40 is safe. 
+would wrap-around to an overload. The CCD read-out noise level here is about
+rms 3 pixel levels (aka ADU), so an offset of 40 is safe. 
 
 Although often incorrectly referred to as "counts" a change of "1" 
 in the integer used in this file to represent a pixel value does not 
@@ -117,16 +117,18 @@ but it is still important to give the right value to your data processing
 package.  In the case of this image the gain is 1.8 ADU/photon.
 
 
-You can also look at SMV images with the popular image display and manipulation package
-[ImageMagick][imagemagick]:
+You can also look at SMV images with the popular image display and manipulation
+package [ImageMagick][imagemagick]:
 
 ```
 display -depth 16 -colorspace GRAY -endian LSB -size 3072x3072+512 GRAY:ALS831_lyso_Gd_001.img
 ```
 
-Although you may need to "normalize" in the GUI before you can see anything. This is because most of
-the pixel values are smaller in the full 16-bit range of the pixels, so they look black. And yes,
-you can also use [ImageMagick][imagemagick] to convert X-ray images to "regular" image file formats:
+Although you may need to "normalize" in the GUI before you can see anything.
+This is because most of the pixel values are smaller in the full 16-bit range
+of the pixels, so they look black. And yes, you can also use
+[ImageMagick][imagemagick] to convert X-ray images to "regular" image file
+formats:
 
 ```bash
 convert -depth 16 -colorspace GRAY -endian LSB -size 3072x3072+512 GRAY:ALS831_lyso_Gd_001.img -normalize -resize 1024x1024 -negate smaller.jpg
@@ -319,7 +321,7 @@ A nice jiffy program for applying various mathematical functions to maps is here
 <br>
 
 
-[adxv]: http://www.scripps.edu/~arvai/adxv.html
+[adxv]: https://www.scripps.edu/tainer/arvai/adxv.html
 [rigaku]: https://www.rigaku.com
 [mosflm]: http://www.mrc-lmb.cam.ac.uk/harry/mosflm/
 [hkl]: http://www.hkl-xray.com
