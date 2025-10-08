@@ -1,5 +1,5 @@
 
-/* add two binary "float" files together - report on resulting stats                           -James Holton  2-11-16
+/* add two binary "float" files together - report on resulting stats                           -James Holton  3-29-24
 
 example:
 
@@ -41,7 +41,7 @@ int main(int argc, char** argv)
     float *medbuffer;
     float median,mad;
     double sum_arej,sumsq_arej,sumd_arej,sumdsq_arej,avg_arej,rms_arej,rmsd_arej;
-    double sumd3_arej,sumd4_arej,skewness_arej,kurtosis_arej;
+    double sumd3_arej,sumd4_arej,skewness_arej,kurtosis_arej,max_arej,min_arej;
     int valid_pixels,n_arej;
     float scale1=1.0,scale2=1.0,outscale=1.0,offset=0.0,outoffset=0.0;
     double float1, float2, float3, float4;
@@ -178,8 +178,8 @@ int main(int argc, char** argv)
         printf("options:\n");\
         printf("\t-scale1 \tscale factor for first file\n");
         printf("\t-scale2 \tscale factor for second file\n");
-        printf("\t-offset \tinteger offset to be subtracted from each file\n");
-        printf("\t-outoffset\tinteger offset to be added to the output file\n");
+        printf("\t-offset \tinteger offset to be subtracted from each file before applying scale\n");
+        printf("\t-outoffset\tinteger offset to be added to the output file after all scaling\n");
         printf("\t-header \tnumber of bytes to ignore in header of each file\n");
         printf("\t-normalize \toutput relative difference instead of difference\n");
         printf("\t-histogram \tprint out a histogram of output values\n");
@@ -423,18 +423,26 @@ int main(int argc, char** argv)
     {
         median = fmedian_with_rejection(valid_pixels+1,medbuffer,outlier_sigma,&mad,&n_arej);
         printf("median = %g mad = %g\n",median,mad);
-        printf("%d pixels rejected after median-mad filter\n",valid_pixels-n_arej);
         for(j=1;j<=n_arej;++j)
         {
         //    deviate = sqrt(medbuffer[j]*medbuffer[j]);
         //    if(deviate>4*mad) printf("GOTHERE: medbuffer[%d]=%g >%g\n",j,medbuffer[j],4*mad);
+            outfloat = medbuffer[j]-outoffset;
+            if(j==1) max_arej=min_arej=outfloat; 
+            if(outfloat>max_arej)max_arej=outfloat;
+            if(outfloat<min_arej)min_arej=outfloat;
         }
+        printf("%d pixels rejected after median-mad filter, new max= %g min= %g\n",valid_pixels-n_arej,max_arej,min_arej);
         avg_arej = fmean_with_rejection(n_arej,medbuffer,outlier_sigma,&rmsd_arej,&n_arej);
         sumsq_arej=sumd_arej=sumdsq_arej=sumd3_arej=sumd4_arej=0.0;
         for(j=1;j<=n_arej;++j)
         {
-            sumsq_arej   += medbuffer[j]-outoffset;
-            diff = medbuffer[j]-outoffset - avg_arej;
+            outfloat = medbuffer[j]-outoffset;
+            if(j==1) max_arej=min_arej=outfloat; 
+            if(outfloat>max_arej)max_arej=outfloat;
+            if(outfloat<min_arej)min_arej=outfloat;
+            sumsq_arej   += outfloat*outfloat;
+            diff = outfloat - avg_arej;
             sumd_arej   += diff;
             sumdsq_arej += diff*diff;
             sumd3_arej  += diff*diff*diff;
@@ -444,7 +452,7 @@ int main(int argc, char** argv)
         rmsd_arej=sqrt(sumdsq_arej/n_arej);
         skewness_arej = sumd3_arej/n_arej/(rmsd_arej*rmsd_arej*rmsd_arej);
         kurtosis_arej = sumd4_arej/n_arej/(rmsd_arej*rmsd_arej*rmsd_arej*rmsd_arej);
-        printf("%d pixels rejected after mean-rmsd filter\n",valid_pixels-n_arej);
+        printf("%d pixels rejected after mean-rmsd filter, new max= %g min= %g\n",valid_pixels-n_arej,max_arej,min_arej);
         printf("after outlier rejection: mean= %g rms= %g rmsd= %g skewness= %g kurtosis= %g ( %d points)\n",avg_arej,rms_arej,rmsd_arej,skewness_arej,kurtosis_arej,n_arej);
 
     }
