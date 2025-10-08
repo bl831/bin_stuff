@@ -106,7 +106,7 @@ mv noiseimage.img nanoBragg.img
 adxv nanoBragg.img
 ```
 
-<img src=nanoBragg_tmb.jpg> <img src=nanoBragg_zoom_tmb.jpg>
+![](nanoBragg_tmb.jpg) ![](nanoBragg_zoom_tmb.jpg)
 
 
 In this case, the default image is too faint to see much (left). If you zoom in (right) some of the
@@ -121,7 +121,7 @@ mv noiseimage.img upscaled.img
 adxv upscaled.img
 ```
 
-<img src=upscaled_tmb.jpg> <img src=upscaled_zoom_tmb.jpg>
+![](upscaled_tmb.jpg) ![](upscaled_zoom_tmb.jpg)
 
 Now you can see the weak inter-Bragg features (left) that were rendered by 
 `nanoBragg`, but too hard to see in the original output.  
@@ -135,7 +135,7 @@ mv noiseimage.img psfed.img
 adxv psfed.img
 ```
 
-<img src=psfed_tmb.jpg> <img src=psfed_zoom_tmb.jpg>
+![](psfed_tmb.jpg) ![](psfed_zoom_tmb.jpg)
 
 Now the zoomed-out image has the familiar tails around the really bright 
 spots you expect to find on a CCD. The PSF can also be made Gaussian.
