@@ -1,5 +1,4 @@
-
-/* apply a C function to each value in a raw "float" input file                -James Holton               8-24-25
+/* apply a C function to each value in a raw "float" input file                -James Holton               3-24-26
 
 example:
 
@@ -83,7 +82,8 @@ int main(int argc, char** argv)
     float *inimage2;
     float *scratch;
     long *count;
-    long *segments,*joins,*segmap,nsegments=0,njoins=0;
+    long *segmap,*joins,nsegments=0,njoins=0;
+    long segment,othersegment,maxseg=0,minseg=0;
     char *headerstuff;
     long header=0,outheader=0;
     func_name func = UNKNOWN;
@@ -1205,8 +1205,8 @@ awk '/func = / && $NF !~ /}/{print substr($NF,1,length($NF)-1);}' ~/projects/bin
         if( func == SEGMENT ){
             /* anything zero is always its own segment */
             if( inimage1[i] == 0.0 ) continue;
-            int segment = 0;
-            int othersegment = 0;
+            segment = 0;
+            othersegment = 0;
             /* look at all neighboring pixels */
             xo = i % xosize;
             yo = ( i / xosize ) % yosize;
@@ -1234,13 +1234,13 @@ awk '/func = / && $NF !~ /}/{print substr($NF,1,length($NF)-1);}' ~/projects/bin
                    /* this should never happen */
                    if(k > pixels) printf("PANIC: segment %d > pixels (%d) \n",othersegment,pixels);
                    /* build a mapping of segments that are connected */
-                    int lo = segment < othersegment ? segment : othersegment;
-  
-                    int hi = segment < othersegment ? othersegment : segment;
+                    long lo = segment < othersegment ? segment : othersegment;
+                    long hi = segment < othersegment ? othersegment : segment;
                     /* only record if not already pointing somewhere better */
                     if( joins[hi] == 0 || joins[hi] > lo ) joins[hi] = lo;
                     if( njoins < hi ) njoins = hi;
                     segment = lo;  
+                    if( hi > maxseg ) maxseg = hi;
                     /* continue scan using the lower id */
                  }
               }
@@ -1255,6 +1255,7 @@ awk '/func = / && $NF !~ /}/{print substr($NF,1,length($NF)-1);}' ~/projects/bin
             /* label the output image with this assigned segment */
             outimage[i] = (float) segment;
             if(debug)printf("output at: %d %d %d = %f\n",x,y,z,outimage[i]);
+            if( segment > maxseg ) maxseg = segment;
         }
         if( func == MAXRADIUS ){
             xo = i % xosize;
@@ -1382,16 +1383,20 @@ awk '/func = / && $NF !~ /}/{print substr($NF,1,length($NF)-1);}' ~/projects/bin
     }
 
     if( func == SEGMENT ) {
-        int segment = 0;
-        int othersegment = 0;
-        int minseg = 0;
-        printf("%d segment discoveries and %d joinings\n",nsegments,njoins);
-        for(k=1;k<=nsegments;++k)
+        segment = 0;
+        othersegment = 0;
+        minseg = 0;
+        printf("%d segment discoveries, max was %d and %d joinings\n",nsegments,maxseg,njoins);
+        for(k=1;k<=maxseg;++k)
         {
           if( ! joins[k] ) joins[k]=k;
           segment = minseg = k;
           if(debug) printf("segment %d joins with %d\n",k,joins[k]);
+          int timeout = maxseg*2;
           while ( ! ( joins[segment] == 0 || joins[segment] == segment ) ) {
+            /* this should never happen */
+            --timeout;
+            if( timeout <=0 ) break;
             /* not at the end of a chain yet */
             othersegment = joins[segment];
             if( othersegment < minseg ) minseg = othersegment;
@@ -1402,32 +1407,39 @@ awk '/func = / && $NF !~ /}/{print substr($NF,1,length($NF)-1);}' ~/projects/bin
             segmap[othersegment] = minseg;
             if(debug) printf("mapping segment %d to %d\n",segment,minseg);\
             joins[segment] = minseg;
-           segment = othersegment;
-           }
+            segment = othersegment;
+          }
+          if( timeout <= 0 ) {
+            joins[k]=minseg;
+            printf("ERROR: infinite loop detected.\n");
+            /* do something about it? */
+          }
           if(debug) printf(" min=%d\n",minseg);
           if(debug) printf("asigning segment %d to segment %d\n",segmap[k],k);
         }
-        for(k=1;k<=nsegments;++k)
+        for(k=1;k<=maxseg;++k)
         {
             segmap[k]=0;
         }
         /* now re-number */
-        int count = 0;
-        for(k=1;k<=nsegments;++k)
+        nsegments = 0;
+        for(k=1;k<=maxseg;++k)
         {
             segment = joins[k];
             if(! segment) segment = k;
             if(! segmap[segment]) 
             {
-                ++count;
-                segmap[segment]=count;
+                ++nsegments;
+                segmap[segment]=nsegments;
             }
         }
-        nsegments = count;
+
         for(j=0;j<outpixels;++j)
         {
             segment = (int) outimage[j];
-            outimage[j] = (float) segmap[joins[segment]];
+            if( segment > 0 && segment <= maxseg ) {
+                outimage[j] = (float) segmap[joins[segment]];
+            }
         }
 
         for(k=0;k<nsegments;++k)
@@ -1879,4 +1891,3 @@ float *Fourier(float *data, unsigned long length, int direction)
 
         return data;
 }
-
